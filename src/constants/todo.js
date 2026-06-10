@@ -1,4 +1,5 @@
 export const TODO_STORAGE_KEY = "dailyTodoApp.todos";
+export const SELECTED_DATE_STORAGE_KEY = "dailyTodoApp.selectedDate";
 
 export const WEEK_DAY_NAMES = ["월", "화", "수", "목", "금", "토", "일"];
 

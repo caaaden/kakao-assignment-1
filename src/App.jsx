@@ -6,14 +6,19 @@ import TodoList from "./components/TodoList.jsx";
 import WeekCalendar from "./components/WeekCalendar.jsx";
 import { getFilteredTodos } from "./utils/todo.js";
 import { getWeekDates, formatDateKey } from "./utils/date.js";
-import { loadTodosFromLocalStorage, saveTodosToLocalStorage } from "./utils/storage.js";
+import {
+  loadSelectedDateFromLocalStorage,
+  loadTodosFromLocalStorage,
+  saveSelectedDateToLocalStorage,
+  saveTodosToLocalStorage,
+} from "./utils/storage.js";
 
 function App() {
   const [todos, setTodos] = useState(() => loadTodosFromLocalStorage());
   const [todoText, setTodoText] = useState("");
   const [message, setMessage] = useState("");
   const [currentFilter, setCurrentFilter] = useState("all");
-  const [selectedDate, setSelectedDate] = useState(() => new Date());
+  const [selectedDate, setSelectedDate] = useState(() => loadSelectedDateFromLocalStorage());
 
   const selectedDateKey = formatDateKey(selectedDate);
   const weekDates = useMemo(() => getWeekDates(selectedDate), [selectedDate]);
@@ -28,6 +33,11 @@ function App() {
   useEffect(() => {
     saveTodosToLocalStorage(todos);
   }, [todos]);
+
+  // 선택된 날짜를 저장해 새로고침 후에도 같은 주간 뷰를 유지합니다.
+  useEffect(() => {
+    saveSelectedDateToLocalStorage(selectedDateKey);
+  }, [selectedDateKey]);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -51,15 +61,8 @@ function App() {
     setMessage("");
   }
 
-  function handleEditTodo(todoId) {
-    const targetTodo = todos.find((todo) => todo.id === todoId);
-
-    if (!targetTodo) {
-      return;
-    }
-
-    const editedText = prompt("수정할 내용을 입력하세요.", targetTodo.text);
-    const trimmedText = editedText ? editedText.trim() : "";
+  function handleEditTodo(todoId, editedText) {
+    const trimmedText = editedText.trim();
 
     // 수정 입력값이 비어 있으면 기존 Todo를 유지합니다.
     if (!trimmedText) {
