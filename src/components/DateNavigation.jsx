@@ -5,12 +5,12 @@ function DateNavigation({ weekStartDateKey, weekEndDateKey, onMoveWeek }) {
       aria-label="주간 Todo 날짜 이동"
     >
       <button
-        className="min-w-[78px] rounded-md bg-[#eee9f8] px-3 py-2 font-bold text-brand transition hover:bg-brand hover:text-white"
+        className="flex h-10 w-10 items-center justify-center rounded-md bg-transparent text-[26px] leading-none text-brand transition hover:bg-[#eee9f8]"
         type="button"
         aria-label="이전 주차"
         onClick={() => onMoveWeek(-1)}
       >
-        이전 주
+        ◀
       </button>
       <time
         className="min-w-0 text-center text-[17px] font-bold leading-snug text-[#24212b] max-[520px]:col-span-2 max-[520px]:row-start-1"
@@ -19,12 +19,12 @@ function DateNavigation({ weekStartDateKey, weekEndDateKey, onMoveWeek }) {
         {weekStartDateKey} ~ {weekEndDateKey}
       </time>
       <button
-        className="min-w-[78px] rounded-md bg-[#eee9f8] px-3 py-2 font-bold text-brand transition hover:bg-brand hover:text-white"
+        className="flex h-10 w-10 items-center justify-center rounded-md bg-transparent text-[26px] leading-none text-brand transition hover:bg-[#eee9f8]"
         type="button"
         aria-label="다음 주차"
         onClick={() => onMoveWeek(1)}
       >
-        다음 주
+        ▶
       </button>
     </div>
   );
