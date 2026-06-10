@@ -87,17 +87,14 @@ function loadTodosFromLocalStorage() {
   todos = JSON.parse(savedTodos);
 }
 
-// 선택된 날짜를 화면에 표시하고 Todo 저장용 날짜 키와 동기화합니다.
+// 선택된 날짜가 포함된 주의 월요일부터 일요일까지 범위를 표시합니다.
 function renderSelectedDate() {
-  const dateText = selectedDate.toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    weekday: "short",
-  });
+  const weekDates = getWeekDates(selectedDate);
+  const weekStartDateKey = formatDateKey(weekDates[0]);
+  const weekEndDateKey = formatDateKey(weekDates[6]);
 
-  selectedDateElement.textContent = dateText;
-  selectedDateElement.dateTime = formatDateKey(selectedDate);
+  selectedDateElement.textContent = `${weekStartDateKey} ~ ${weekEndDateKey}`;
+  selectedDateElement.dateTime = weekStartDateKey;
   renderWeekCalendar();
 }
 

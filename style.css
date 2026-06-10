@@ -38,6 +38,7 @@ button {
 
 .app-header {
   margin-bottom: 24px;
+  text-align: center;
 }
 
 .app-label {
@@ -52,6 +53,7 @@ button {
   margin: 0;
   font-size: 32px;
   line-height: 1.2;
+  text-align: center;
 }
 
 .date-navigation {
