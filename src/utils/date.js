@@ -23,3 +23,10 @@ export function formatDateKey(date) {
 
   return `${year}-${month}-${day}`;
 }
+
+export function formatMonthLabel(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+
+  return `${year}년 ${month}월`;
+}

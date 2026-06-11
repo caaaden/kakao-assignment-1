@@ -30,10 +30,19 @@ function TodoItem({ todo, onEditTodo, onToggleTodo, onDeleteTodo }) {
   }
 
   return (
-    <li className="grid grid-cols-[1fr_auto] items-center gap-3.5 rounded-lg border border-[#ebe6f7] bg-[#fbfaff] p-3.5 max-[520px]:grid-cols-1">
+    <li className="grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-lg border border-[#ebe6f7] bg-[#fbfaff] p-3.5 max-[520px]:grid-cols-[auto_1fr]">
+      <input
+        className="h-5 w-5 accent-brand disabled:cursor-not-allowed disabled:opacity-50"
+        type="checkbox"
+        aria-label={`${todo.text} 완료 상태`}
+        checked={todo.isCompleted}
+        disabled={isEditing}
+        onChange={() => onToggleTodo(todo.id)}
+      />
+
       {isEditing ? (
         <form
-          className="contents max-[520px]:flex max-[520px]:flex-col max-[520px]:gap-2"
+          className="contents max-[520px]:col-span-2 max-[520px]:grid max-[520px]:grid-cols-1 max-[520px]:gap-2"
           onSubmit={handleSubmitEdit}
         >
           <label className="sr-only" htmlFor={`edit-todo-${todo.id}`}>
@@ -63,9 +72,6 @@ function TodoItem({ todo, onEditTodo, onToggleTodo, onDeleteTodo }) {
           </span>
           <div className="flex gap-2 max-[520px]:w-full">
             <TodoActionButton onClick={handleStartEdit}>수정</TodoActionButton>
-            <TodoActionButton onClick={() => onToggleTodo(todo.id)}>
-              {todo.isCompleted ? "취소" : "완료"}
-            </TodoActionButton>
             <TodoActionButton danger onClick={() => onDeleteTodo(todo.id)}>
               삭제
             </TodoActionButton>

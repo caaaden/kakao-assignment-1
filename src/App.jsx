@@ -5,7 +5,7 @@ import TodoForm from "./components/TodoForm.jsx";
 import TodoList from "./components/TodoList.jsx";
 import WeekCalendar from "./components/WeekCalendar.jsx";
 import { getFilteredTodos } from "./utils/todo.js";
-import { getWeekDates, formatDateKey } from "./utils/date.js";
+import { getWeekDates, formatDateKey, formatMonthLabel } from "./utils/date.js";
 import {
   loadSelectedDateFromLocalStorage,
   loadTodosFromLocalStorage,
@@ -22,8 +22,7 @@ function App() {
 
   const selectedDateKey = formatDateKey(selectedDate);
   const weekDates = useMemo(() => getWeekDates(selectedDate), [selectedDate]);
-  const weekStartDateKey = formatDateKey(weekDates[0]);
-  const weekEndDateKey = formatDateKey(weekDates[6]);
+  const monthLabel = formatMonthLabel(selectedDate);
 
   const filteredTodos = useMemo(() => {
     return getFilteredTodos(todos, selectedDateKey, currentFilter);
@@ -116,23 +115,20 @@ function App() {
         className="w-full max-w-[560px] rounded-lg border border-[#e8e2f5] bg-white p-8 shadow-[0_18px_40px_rgba(42,31,70,0.08)] max-[520px]:p-5"
         aria-labelledby="app-title"
       >
-        <header className="mb-6 text-center">
-          <h1 id="app-title" className="m-0 text-[32px] font-bold leading-tight">
-            Todo List
+        <header className="mb-5 text-center">
+          <h1 id="app-title" className="m-0 text-[28px] font-extrabold leading-tight text-brand">
+            Todo
           </h1>
         </header>
 
-        <DateNavigation
-          weekStartDateKey={weekStartDateKey}
-          weekEndDateKey={weekEndDateKey}
-          onMoveWeek={handleMoveWeek}
-        />
+        <DateNavigation monthLabel={monthLabel} selectedDateKey={selectedDateKey} />
 
         <WeekCalendar
           todos={todos}
           weekDates={weekDates}
           selectedDateKey={selectedDateKey}
           onSelectDate={handleSelectDate}
+          onMoveWeek={handleMoveWeek}
         />
 
         <TodoForm

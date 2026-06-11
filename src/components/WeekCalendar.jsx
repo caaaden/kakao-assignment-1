@@ -1,14 +1,16 @@
 import { WEEK_DAY_NAMES } from "../constants/todo.js";
 import { formatDateKey } from "../utils/date.js";
 
-function WeekCalendar({ todos, weekDates, selectedDateKey, onSelectDate }) {
+function WeekCalendar({ todos, weekDates, selectedDateKey, onSelectDate, onMoveWeek }) {
   const todayDateKey = formatDateKey(new Date());
 
   return (
     <div
-      className="mb-[18px] grid grid-cols-7 gap-2 max-[520px]:grid-cols-[repeat(7,minmax(58px,1fr))] max-[520px]:overflow-x-auto max-[520px]:pb-1"
-      aria-label="이번 주 날짜 목록"
+      className="mb-[18px] grid grid-cols-[auto_repeat(7,1fr)_auto] items-center gap-2 rounded-b-lg border border-t-0 border-[#ebe6f7] bg-[#fbfaff] px-3 pb-3 pt-2 max-[520px]:grid-cols-[auto_repeat(7,minmax(58px,1fr))_auto] max-[520px]:overflow-x-auto max-[520px]:pb-4"
+      aria-label="주간 Todo 날짜 이동 및 날짜 목록"
     >
+      <WeekMoveButton direction="left" onClick={() => onMoveWeek(-1)} />
+
       {weekDates.map((date, index) => {
         const dateKey = formatDateKey(date);
         const todoCount = todos.filter((todo) => todo.date === dateKey).length;
@@ -31,11 +33,49 @@ function WeekCalendar({ todos, weekDates, selectedDateKey, onSelectDate }) {
           >
             <span className="text-xs font-bold">{WEEK_DAY_NAMES[index]}</span>
             <span className="text-xl font-extrabold leading-none">{date.getDate()}</span>
-            <span className="text-xs font-bold">{todoCount}개</span>
+            <span className="text-xs font-bold">{todoCount}</span>
           </button>
         );
       })}
+
+      <WeekMoveButton direction="right" onClick={() => onMoveWeek(1)} />
     </div>
+  );
+}
+
+function WeekMoveButton({ direction, onClick }) {
+  const isPrevious = direction === "left";
+
+  return (
+    <button
+      className="flex h-10 w-8 items-center justify-center rounded-md bg-transparent text-brand transition hover:bg-[#eee9f8]"
+      type="button"
+      aria-label={isPrevious ? "이전 주차" : "다음 주차"}
+      onClick={onClick}
+    >
+      <RoundedTriangleIcon direction={direction} />
+    </button>
+  );
+}
+
+function RoundedTriangleIcon({ direction }) {
+  const points = direction === "left" ? "16 5 7 12 16 19" : "8 5 17 12 8 19";
+
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <polygon
+        points={points}
+        fill="currentColor"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
